@@ -23,9 +23,9 @@ def print_header
 end
 
 def print_names_a(students)
-  puts "Students whose names start with a:"
+  puts "Students whose names start with A and are shorter than 12 chars:"
   students.each.with_index(1) { |student, index|
-    if student[:name][0].downcase == "a"
+    if student[:name][0].downcase == "a" && student[:name].length < 12
     then puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
   }
