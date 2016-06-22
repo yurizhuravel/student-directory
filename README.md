@@ -4,7 +4,6 @@ This script is for managing the list of students at Villains Academy
 
 ## How to use ##
 
-```
-shell
+```shell
 ruby directory.rb
 ```
