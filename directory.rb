@@ -1,4 +1,6 @@
-#First we define our methods
+# this is an empty array accessible to all methods
+@students = []
+
 def input_students
 
   def take_input(input_field)
@@ -6,8 +8,6 @@ def input_students
     puts "To finish, hit return twice"
   end
 
-  # empty array
-  students = []
   #get the first name
   take_input("name")
   name = gets.chomp
@@ -20,11 +20,11 @@ def input_students
 
   #while the name is not empty, repeat this:
   while !name.empty?
-    students << {name: name, cohort: cohort, age: age}
-    if students.length == 1
-      puts "Now we have #{students.count} student"
+    @students << {name: name, cohort: cohort, age: age}
+    if @students.length == 1
+      puts "Now we have #{@students.count} student"
     else
-      puts "Now we have #{students.count} students"
+      puts "Now we have #{@students.count} students"
     end
     #get more data
     take_input("name")
@@ -34,9 +34,41 @@ def input_students
     take_input("age")
     age = gets.chomp
   end
+end
 
-  #return the array of students
-  students
+def interactive_menu
+  loop do
+    print_menu
+    menu_selection(gets.chomp)
+  end
+end
+
+def print_menu
+  # print the menu and ask user what to do
+  puts "1. Input the students list"
+  puts "2. Show the students list"
+  puts "9. Quit" # 9 because we'll be adding more items
+end
+
+def menu_selection (selection)
+  case selection
+    when "1"
+      # input the students list
+      input_students
+    when "2"
+      show_students
+    when "9"
+      exit # this will cause the program to terminate
+    else
+      puts "I didin't get that, try again"
+  end
+end
+
+def show_students
+  # show the students list
+  print_header
+  print_students_list
+  print_footer
 end
 
 def print_header
@@ -44,43 +76,16 @@ def print_header
   puts "-----------------".center(50)
 end
 
-def print(students)
+def print_students_list
   i = 0
-  until i == students.length
-    puts "#{i+1}. #{students[i][:name]} (#{students[i][:cohort]} cohort, age: #{students[i][:age]}, height: #{students[i][:height]} cm)"
+  until i == @students.length
+    puts "#{i+1}. #{@students[i][:name]} (#{@students[i][:cohort]} cohort, age: #{@students[i][:age]})"
     i += 1
   end
 end
 
-def print_footer(names)
-  puts "Overall, we have #{names.count} great students".center(50)
-end
-
-def interactive_menu
-  students = []
-  loop do
-    # print the menu and ask user what to do
-    puts "1. Input the students list"
-    puts "2. Show the students list"
-    puts "9. Quit" # 9 because we'll be adding more items
-    # 2. save the input into a variable
-    selection = gets.chomp
-    #3. do what the user has asked
-    case selection
-      when "1"
-        # input the students list
-        students = input_students
-      when "2"
-        # show the students list
-        print_header
-        print(students)
-        print_footer(students)
-      when "9"
-        exit # this will cause the program to terminate
-      else
-        puts "I didin't get that, try again"
-    end
-  end
+def print_footer
+  puts "Overall, we have #{@students.count} great students".center(50)
 end
 
 interactive_menu
