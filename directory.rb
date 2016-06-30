@@ -10,13 +10,13 @@ def input_students
 
   #get the first name
   take_input("name")
-  name = gets.chomp
+  name = STDIN.gets.chomp
   #get the cohort
   take_input("cohort")
-  cohort = gets.chomp
+  cohort = STDIN.gets.chomp
   #get the age
   take_input("age")
-  age = gets.chomp
+  age = STDIN.gets.chomp
 
   #while the name is not empty, repeat this:
   while !name.empty?
@@ -28,18 +28,18 @@ def input_students
     end
     #get more data
     take_input("name")
-    name = gets.chomp
+    name = STDIN.gets.chomp
     take_input("cohort")
-    cohort = gets.chomp
+    cohort = STDIN.gets.chomp
     take_input("age")
-    age = gets.chomp
+    age = STDIN.gets.chomp
   end
 end
 
 def interactive_menu
   loop do
     print_menu
-    menu_selection(gets.chomp)
+    menu_selection(STDIN.gets.chomp)
   end
 end
 
@@ -106,8 +106,8 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age = line.chomp.split(',')
     @students << {name: name, cohort: cohort, age: age}
@@ -115,4 +115,16 @@ def load_students
   file.close
 end
 
+def try_load_students
+  filename = ARGV.first #(first argument from the command line)
+  return if filename.nil? # quit the method if no filename given
+  if File.exists?(filename) # if there is such a file
+    load_students(filename)
+    puts "Loaded #{@students.count} students from #{filename}"
+  else # if there is no such file
+    puts "Oops, #{fileneme} does not exist."
+  end
+end
+
+try_load_students
 interactive_menu
