@@ -1,38 +1,35 @@
 # this is an empty array accessible to all methods
 @students = []
 
-def input_students
+def what_input(input_field)
+  puts "Please enter the student's #{input_field}"
+  puts "To finish, hit return twice"
+end
 
-  def take_input(input_field)
-    puts "Please enter the student's #{input_field}"
-    puts "To finish, hit return twice"
-  end
-
-  #get the first name
-  take_input("name")
-  name = STDIN.gets.chomp
+def take_input
+  #get the name
+  what_input("name")
+  @name = STDIN.gets.chomp
   #get the cohort
-  take_input("cohort")
-  cohort = STDIN.gets.chomp
+  what_input("cohort")
+  @cohort = STDIN.gets.chomp
   #get the age
-  take_input("age")
-  age = STDIN.gets.chomp
+  what_input("age")
+  @age = STDIN.gets.chomp
+end
 
+def input_students
+  take_input
   #while the name is not empty, repeat this:
-  while !name.empty?
-    @students << {name: name, cohort: cohort, age: age}
+  while !@name.empty?
+    @students << {name: @name, cohort: @cohort, age: @age}
     if @students.length == 1
       puts "Now we have #{@students.count} student"
     else
       puts "Now we have #{@students.count} students"
     end
     #get more data
-    take_input("name")
-    name = STDIN.gets.chomp
-    take_input("cohort")
-    cohort = STDIN.gets.chomp
-    take_input("age")
-    age = STDIN.gets.chomp
+    take_input
   end
 end
 
