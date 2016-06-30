@@ -49,12 +49,13 @@ def print_menu
   # print the menu and ask user what to do
   puts "1. Input the students list"
   puts "2. Show the students list"
-  puts "3. Save the list to students.csv"
-  puts "4. Load students list from a file"
+  puts "3. Save the list to a file"
+  puts "4. Load the list from a file"
   puts "9. Quit" # 9 because we'll be adding more items
 end
 
 def menu_selection (selection)
+  puts "You chose option #{selection}"
   case selection
     when "1"
       # input the students list
@@ -68,7 +69,7 @@ def menu_selection (selection)
     when "9"
       exit # this will cause the program to terminate
     else
-      puts "I didin't get that, try again"
+      puts "There is no such option, try again"
   end
 end
 
@@ -80,7 +81,7 @@ def show_students
 end
 
 def print_header
-  puts "The students of Villains Academy by cohort:".center(50)
+  puts "The students of Villains Academy:".center(50)
   puts "-----------------".center(50)
 end
 
@@ -97,8 +98,10 @@ def print_footer
 end
 
 def save_students
+  puts "How you would like the file to be called?"
+  filename = STDIN.gets.chomp
   # Open the file for writitng
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   # Iterate over the array
   @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:age]]
@@ -108,7 +111,7 @@ def save_students
   file.close
 end
 
-def load_students(filename = "students.csv")
+def load_file (filename)
   file = File.open(filename, "r")
   file.readlines.each do |line|
     @name, @cohort, @age = line.chomp.split(',')
@@ -117,17 +120,28 @@ def load_students(filename = "students.csv")
   file.close
 end
 
-def try_load_students
-  filename = ARGV.first #(first argument from the command line)
-  if filename.nil? # default if no filename given
+def filename_validate (filename)
+  if filename.nil? || filename.empty? # default if no filename given
     filename = "students.csv"
   end
   if File.exists?(filename) # if there is such a file
-    load_students(filename)
+    load_file(filename)
     puts "Loaded #{@students.count} students from #{filename}"
   else # if there is no such file
     puts "Oops, #{filename} does not exist."
   end
+end
+
+def load_students
+  @students = []
+  puts "Please give the name of the file to load\nor hit enter to load from students.csv"
+  filename = STDIN.gets.chomp
+  filename_validate(filename)
+end
+
+def try_load_students
+  filename = ARGV.first #(first argument from the command line)
+  filename_validate(filename)
 end
 
 try_load_students
