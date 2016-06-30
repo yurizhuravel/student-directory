@@ -9,6 +9,7 @@ end
 def take_input
   #get the name
   what_input("name")
+  #STDIN everywhere because filenames can be passed as arguments at launch and gets will use them as input stream, needs to be redirected to standard (keyboard)
   @name = STDIN.gets.chomp
   #get the cohort
   what_input("cohort")
@@ -18,11 +19,15 @@ def take_input
   @age = STDIN.gets.chomp
 end
 
+def add_to_list
+  @students << {name: @name, cohort: @cohort, age: @age}
+end
+
 def input_students
   take_input
   #while the name is not empty, repeat this:
   while !@name.empty?
-    @students << {name: @name, cohort: @cohort, age: @age}
+    add_to_list
     if @students.length == 1
       puts "Now we have #{@students.count} student"
     else
@@ -106,20 +111,22 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort, age = line.chomp.split(',')
-    @students << {name: name, cohort: cohort, age: age}
+    @name, @cohort, @age = line.chomp.split(',')
+    add_to_list
   end
   file.close
 end
 
 def try_load_students
   filename = ARGV.first #(first argument from the command line)
-  return if filename.nil? # quit the method if no filename given
+  if filename.nil? # default if no filename given
+    filename = "students.csv"
+  end
   if File.exists?(filename) # if there is such a file
     load_students(filename)
     puts "Loaded #{@students.count} students from #{filename}"
   else # if there is no such file
-    puts "Oops, #{fileneme} does not exist."
+    puts "Oops, #{filename} does not exist."
   end
 end
 
